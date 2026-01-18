@@ -9,7 +9,7 @@ function Navbar() {
 
   const handleLogout = () => {
     removeToken();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
