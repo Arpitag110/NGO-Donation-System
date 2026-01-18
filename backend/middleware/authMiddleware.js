@@ -21,7 +21,7 @@ const protect = (req, res, next) => {
 };
 
 // ADMIN CHECK
-const isAdmin = (req, res, next) => {
+const adminOnly = (req, res, next) => {
   if (req.user && req.user.role === "ADMIN") {
     next();
   } else {
@@ -29,4 +29,4 @@ const isAdmin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, isAdmin };
+module.exports = { protect, adminOnly };

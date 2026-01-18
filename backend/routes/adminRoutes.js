@@ -1,16 +1,16 @@
 const express = require("express");
-const {
-    getDashboardStats,
-    getAllRegistrations,
-    getAllDonations,
-} = require("../controllers/adminController");
-
-const { protect, isAdmin } = require("../middleware/authMiddleware");
-
 const router = express.Router();
 
-router.get("/stats", protect, isAdmin, getDashboardStats);
-router.get("/registrations", protect, isAdmin, getAllRegistrations);
-router.get("/donations", protect, isAdmin, getAllDonations);
+const {
+  getAdminStats,
+  getAllDonations,
+  getAllUsers,
+} = require("../controllers/adminController");
+
+const { protect, adminOnly } = require("../middleware/authMiddleware");
+
+router.get("/stats", protect, adminOnly, getAdminStats);
+router.get("/donations", protect, adminOnly, getAllDonations);
+router.get("/users", protect, adminOnly, getAllUsers); // 🔴 MUST BE FUNCTION
 
 module.exports = router;

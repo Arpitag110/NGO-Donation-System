@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "../api/api";
+import Card from "../components/Card";
+import Button from "../components/Button";
 
 function Register() {
   const [name, setName] = useState("");
@@ -7,13 +10,18 @@ function Register() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  const navigate = useNavigate();
+
   const handleRegister = async (e) => {
     e.preventDefault();
+    setMessage("");
 
     try {
       const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ name, email, password }),
       });
 
@@ -24,47 +32,55 @@ function Register() {
         return;
       }
 
-      setMessage("Registration successful. Please login.");
-    } catch (err) {
-      setMessage("Server error");
+      // Redirect to login after successful registration
+      navigate("/");
+    } catch (error) {
+      setMessage("Server error. Please try again.");
     }
   };
 
   return (
-    <div>
-      <h3>Register</h3>
+    <div className="min-h-screen flex items-center justify-center bg-zinc-900">
+      <Card title="Register">
+        <form onSubmit={handleRegister} className="space-y-4">
+          <input
+            placeholder="Name"
+            className="w-full bg-zinc-900 text-white border border-zinc-700
+                       p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
-      <form onSubmit={handleRegister}>
-        <input
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <br />
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full bg-zinc-900 text-white border border-zinc-700
+                       p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <br />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full bg-zinc-900 text-white border border-zinc-700
+                       p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-600"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <br />
+          <Button text="Register" />
+        </form>
 
-        <button type="submit">Register</button>
-      </form>
-
-      {message && <p>{message}</p>}
+        {message && (
+          <p className="mt-3 text-sm text-red-400 text-center">
+            {message}
+          </p>
+        )}
+      </Card>
     </div>
   );
 }

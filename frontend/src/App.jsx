@@ -1,26 +1,27 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
 import NGORegistration from "./pages/NGORegistration";
+import Donate from "./pages/Donate";
+import DonationHistory from "./pages/DonationHistory";
+import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+
 
 function App() {
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>NGO Registration & Donation System</h2>
-
-      <nav style={{ marginBottom: "1rem" }}>
-        <Link to="/">Login</Link> |{" "}
-        <Link to="/register">Register</Link> |{" "}
-        <Link to="/ngo-registration">NGO Registration</Link> |{" "}
-        <Link to="/dashboard">Dashboard</Link>
-      </nav>
+    <div className="min-h-screen bg-zinc-900 text-white">
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/ngo-registration" element={<NGORegistration />} />
+        <Route path="/donate" element={<Donate />} />
+        <Route path="/donations" element={<DonationHistory />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </div>
   );
