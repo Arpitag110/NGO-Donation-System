@@ -1,8 +1,8 @@
 const express = require("express");
 const {
-  getDashboardStats,
-  getAllRegistrations,
-  getAllDonations,
+    getDashboardStats,
+    getAllRegistrations,
+    getAllDonations,
 } = require("../controllers/adminController");
 
 const { protect, isAdmin } = require("../middleware/authMiddleware");
