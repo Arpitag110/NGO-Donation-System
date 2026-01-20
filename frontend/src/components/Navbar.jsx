@@ -15,13 +15,13 @@ function Navbar() {
   return (
     <nav className="bg-black border-b border-zinc-800 px-6 py-4 flex justify-between items-center">
       <h1 className="text-white text-lg font-semibold">
-        NGO Donation System
+        <span className="text-red-600">My</span>NGO
       </h1>
 
       <div className="flex items-center space-x-6 text-sm">
         {!token && (
           <>
-            <Link to="/" className="text-zinc-300 hover:text-white">
+            <Link to="/login" className="text-zinc-300 hover:text-white">
               Login
             </Link>
             <Link to="/register" className="text-zinc-300 hover:text-white">

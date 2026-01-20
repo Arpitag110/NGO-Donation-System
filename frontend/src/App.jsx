@@ -1,5 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NGORegistration from "./pages/NGORegistration";
@@ -10,12 +11,15 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 
 function App() {
+  const location = useLocation();
+
   return (
     <div className="min-h-screen bg-zinc-900 text-white">
-      <Navbar />
+      {location.pathname !== "/" && <Navbar />}
 
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/ngo-registration" element={<NGORegistration />} />
         <Route path="/donate" element={<Donate />} />
