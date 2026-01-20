@@ -6,6 +6,11 @@ function DonationHistory() {
   const [donations, setDonations] = useState([]);
   const [message, setMessage] = useState("");
 
+  // Calculate stats
+  const totalDonated = donations.reduce((sum, d) => sum + (d.amount || 0), 0);
+  const successfulDonations = donations.filter(d => d.status === "SUCCESS").length;
+  const averageDonation = successfulDonations > 0 ? (totalDonated / successfulDonations).toFixed(2) : 0;
+
   useEffect(() => {
     const fetchDonations = async () => {
       const token = getToken();
@@ -38,65 +43,82 @@ function DonationHistory() {
   }, []);
 
   return (
-  <div className="min-h-screen bg-zinc-900 flex justify-center p-6">
-    <div className="w-full max-w-4xl">
-      <h3 className="text-xl font-semibold text-white mb-4">
-        My Donation History
-      </h3>
+    <div className="min-h-screen bg-zinc-900 flex justify-center p-6">
+      <div className="w-full max-w-4xl">
+        <h3 className="text-xl font-semibold text-white mb-6">
+          My Donation History
+        </h3>
 
-      {message && (
-        <p className="text-red-400 text-sm mb-4">{message}</p>
-      )}
+        {message && (
+          <p className="text-red-400 text-sm mb-4">{message}</p>
+        )}
 
-      {donations.length === 0 ? (
-        <p className="text-zinc-400">No donations found.</p>
-      ) : (
-        <div className="overflow-x-auto bg-zinc-800 border border-zinc-700 rounded-lg">
-          <table className="min-w-full text-sm text-left text-zinc-300">
-            <thead className="bg-zinc-900 text-zinc-400 uppercase text-xs">
-              <tr>
-                <th className="px-6 py-3">Amount (₹)</th>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3">Date</th>
-              </tr>
-            </thead>
+        {/* Stats Cards */}
+        {donations.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-4">
+              <p className="text-zinc-400 text-sm">Total Donated</p>
+              <p className="text-2xl font-bold text-red-500">₹{totalDonated}</p>
+            </div>
+            <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-4">
+              <p className="text-zinc-400 text-sm">Successful Donations</p>
+              <p className="text-2xl font-bold text-green-500">{successfulDonations}</p>
+            </div>
+            <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-4">
+              <p className="text-zinc-400 text-sm">Average Donation</p>
+              <p className="text-2xl font-bold text-white">₹{averageDonation}</p>
+            </div>
+          </div>
+        )}
 
-            <tbody>
-              {donations.map((donation) => (
-                <tr
-                  key={donation._id}
-                  className="border-t border-zinc-700 hover:bg-zinc-700 transition"
-                >
-                  <td className="px-6 py-4 font-medium text-white">
-                    ₹{donation.amount}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-semibold ${
-                        donation.status === "SUCCESS"
-                          ? "bg-green-600 text-white"
-                          : donation.status === "FAILED"
-                          ? "bg-red-600 text-white"
-                          : "bg-yellow-500 text-black"
-                      }`}
-                    >
-                      {donation.status}
-                    </span>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    {new Date(donation.createdAt).toLocaleDateString()}
-                  </td>
+        {donations.length === 0 ? (
+          <p className="text-zinc-400">No donations found.</p>
+        ) : (
+          <div className="overflow-x-auto bg-zinc-800 border border-zinc-700 rounded-lg">
+            <table className="min-w-full text-sm text-left text-zinc-300">
+              <thead className="bg-zinc-900 text-zinc-400 uppercase text-xs">
+                <tr>
+                  <th className="px-6 py-3">Amount (₹)</th>
+                  <th className="px-6 py-3">Status</th>
+                  <th className="px-6 py-3">Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+
+              <tbody>
+                {donations.map((donation) => (
+                  <tr
+                    key={donation._id}
+                    className="border-t border-zinc-700 hover:bg-zinc-700 transition"
+                  >
+                    <td className="px-6 py-4 font-medium text-white">
+                      ₹{donation.amount}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-semibold ${donation.status === "SUCCESS"
+                            ? "bg-green-600 text-white"
+                            : donation.status === "FAILED"
+                              ? "bg-red-600 text-white"
+                              : "bg-yellow-500 text-black"
+                          }`}
+                      >
+                        {donation.status}
+                      </span>
+                    </td>
+
+                    <td className="px-6 py-4">
+                      {new Date(donation.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 
 }
 
